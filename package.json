@@ -5,11 +5,11 @@
   "main": "app/index.json",
   "scripts": {
     "jestInline": "jest --runInBand --config jestconfig.json",
-    "test": "sls offline start --exec \"npm run jestInline\"",
+    "test": "npm run stopDynamo; npm run dynamo; sls offline start --exec \"npm run jestInline\"",
     "start": "sls offline start",
     "lint": "tslint -p tsconfig.json",
-    "startDynamo": "docker run --name dynamoLocal -d -p 8000:8000 amazon/dynamodb-local",
-    "stopDynamo": "docker stop dynamoLocal"
+    "dynamo": "docker run --name dynamoLocal -d -p 8000:8000 amazon/dynamodb-local",
+    "stopDynamo": "docker stop dynamoLocal; docker rm dynamoLocal"
   },
   "files": [
     "app/**/*"
@@ -24,7 +24,8 @@
     "node-fetch": "^2.6.0",
     "serverless": "^1.41.0",
     "serverless-plugin-graphiql": "^0.3.0",
-    "serverless-plugin-log-retention": "^1.0.3"
+    "serverless-plugin-log-retention": "^1.0.3",
+    "validation-schema-example": "git+https://github.com/SumoCreations/validation-schema-example.git"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",

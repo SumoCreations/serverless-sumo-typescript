@@ -1,0 +1,20 @@
+[
+  {
+    "indexSortKey": "shout@jimjeffers.com",
+    "email": "shout@jimjeffers.com",
+    "sortKey": "USER",
+    "partitionKey": "936824c3-8180-4df3-add4-a34dfb5323fd",
+    "firstName": "James",
+    "lastName": "Jeffers",
+    "password": "$2a$10$FvFbLgoo3/b/Q2KQQLIn2.7sVDbBhOiBh/eOEWpgWTWMZ4NVyOcom"
+  },
+  {
+    "email": "jim@sumocreations.com",
+    "indexSortKey": "jim@sumocreations.com",
+    "sortKey": "USER",
+    "partitionKey": "xm6824c3-ji80-4df3-add4-a34dfbf7whfd",
+    "firstName": "Jim",
+    "lastName": "Jeffers",
+    "password": "$2a$10$FvFbLgoo3/b/Q2KQQLIn2.7sVDbBhOiBh/eOEWpgWTWMZ4NVyOcom"
+  }
+]

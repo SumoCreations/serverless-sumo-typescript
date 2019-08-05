@@ -1,0 +1,87 @@
+service:
+  name: serverless-sumo-typescript
+
+plugins:
+  - serverless-webpack
+  - serverless-dynamodb-local
+  - serverless-offline
+  - serverless-domain-manager
+  - serverless-plugin-log-retention
+
+custom:
+  logRetentionInDays: 30
+  domain:
+    dev: dev-api.adeqparsers.com
+    prod: api.adeqparsers.com
+    staging: staging-api.adeqparsers.com
+  customDomain:
+    domainName: ${self:custom.domain.${opt:stage, self:provider.stage}}
+    basePath: ''
+    stage: ${opt:stage, self:provider.stage}
+    createRoute53Record: true
+  serverless-offline:
+    port: 4000
+  dynamodb:
+    stages:
+      - dev
+    start:
+      migrate: true
+      seed: true
+      noStart: true
+    seed:
+      dev:
+        sources:
+          - table: ${self:service}-${opt:stage, self:provider.stage}-master-resources
+            sources: [./seed/resources.json]
+          - table: ${self:service}-${opt:stage, self:provider.stage}-users-lookup
+            sources: [./seed/usersLookup.json]
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  profile: serverless
+  region: us-west-1
+  environment:
+    ACCESS_TOKEN_LIFESPAN: 300
+    DYNAMODB_RESOURCES_TABLE: ${self:service}-${opt:stage, self:provider.stage}-master-resources
+    DYNAMODB_USER_LOOKUP_TABLE: ${self:service}-${opt:stage, self:provider.stage}-users-lookup
+    DYNAMODB_TOKEN_LOOKUP_TABLE: ${self:service}-${opt:stage, self:provider.stage}-tokens-lookup
+    OAUTH_SIGNATURE: v'59H|L0Q65=m^[+ui3p,-1B';>"MvW/YDU'@gkk:XS<:2SU?tj*X=?hn`}k|2f
+    REFRESH_TOKEN_LIFESPAN: 172800
+    SALT_ROUNDS: 10
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+      Resource: 'arn:aws:s3:::${self:service}-${opt:stage, self:provider.stage}-*'
+    - Effect: Allow
+      Action:
+        - sns:DeleteEndpoint
+        - sns:Publish
+        - sns:GetPlatformApplicationAttributes
+        - sns:CreatePlatformEndpoint
+      Resource: 'arn:aws:sns:${opt:region, self:provider.region}:*'
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchGetItem
+      Resource: 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:service}-${opt:stage, self:provider.stage}-*'
+
+functions:
+  graphql:
+    handler: app/apollo.graphqlHandler
+    events:
+      - http:
+          path: graphql
+          method: any
+          cors: true
+
+resources:
+  # DynamoDB
+  - ${file(resources/dynamo.yml)}
