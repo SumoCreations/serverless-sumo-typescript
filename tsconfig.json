@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "lib": ["es2017"],
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "sourceMap": true,
+    "target": "es2017",
+    "esModuleInterop": true,
+    "outDir": "lib"
+  },
+  "include": ["app"],
+  "exclude": ["node_modules"]
+}
