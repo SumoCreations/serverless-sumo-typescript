@@ -11,9 +11,9 @@ plugins:
 custom:
   logRetentionInDays: 30
   domain:
-    dev: dev-api.adeqparsers.com
-    prod: api.adeqparsers.com
-    staging: staging-api.adeqparsers.com
+    dev: dev-api.example.com
+    prod: api.example.com
+    staging: staging-api.example.com
   customDomain:
     domainName: ${self:custom.domain.${opt:stage, self:provider.stage}}
     basePath: ''
