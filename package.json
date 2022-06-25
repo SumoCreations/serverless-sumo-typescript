@@ -21,7 +21,7 @@
     "graphql-tools": "^4.0.4",
     "jsonwebtoken": "^8.5.1",
     "luxon": "^1.13.2",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "serverless": "^1.41.0",
     "serverless-plugin-graphiql": "^0.3.0",
     "serverless-plugin-log-retention": "^1.0.3",
